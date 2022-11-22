@@ -1,0 +1,583 @@
+m255
+K4
+z2
+13
+!s112 1.1
+!i10d 8192
+!i10e 25
+!i10f 100
+cModel Technology
+Z0 dC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/simulation/modelsim
+vBB_SYSTEM
+Z1 !s110 1669078790
+!i10b 1
+!s100 TEAERTnLB8R1WdFWJnjB51
+I[ei?P9MmOeK7?zKXF01jU3
+Z2 VDg1SIo80bB@j0V0VzS_@n1
+R0
+w1669076832
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/BB_SYSTEM.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/BB_SYSTEM.v
+Z3 L0 21
+Z4 OV;L;10.5b;63
+r1
+!s85 0
+31
+Z5 !s108 1669078790.000000
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/BB_SYSTEM.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/BB_SYSTEM.v|
+!i113 1
+Z6 o-vlog01compat -work work
+!s92 -vlog01compat -work work +incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER
+Z7 tCvgOpt 0
+n@b@b_@s@y@s@t@e@m
+vCC_BIN2BCD1
+Z8 !s110 1669078789
+!i10b 1
+!s100 QO[[GfEG:_IIZUgJ1o]@b1
+I[0VWFhj?A6hQz5QWjOSze1
+R2
+R0
+w1531849172
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_BIN2BCD1.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_BIN2BCD1.v
+Z9 L0 19
+R4
+r1
+!s85 0
+31
+Z10 !s108 1669078789.000000
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_BIN2BCD1.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_BIN2BCD1.v|
+!i113 1
+R6
+Z11 !s92 -vlog01compat -work work +incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl
+R7
+n@c@c_@b@i@n2@b@c@d1
+vCC_BOTTOMSIDECOMPARATOR
+Z12 !s110 1669078792
+!i10b 1
+!s100 K^Td2Ufcna0[WF1b:YAS:1
+IL@@V4@BP6b[jUF9DbNj9j1
+R2
+R0
+w1669050320
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_BOTTOMSIDECOMPARATOR.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_BOTTOMSIDECOMPARATOR.v
+R3
+R4
+r1
+!s85 0
+31
+Z13 !s108 1669078792.000000
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_BOTTOMSIDECOMPARATOR.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_BOTTOMSIDECOMPARATOR.v|
+!i113 1
+R6
+R11
+R7
+n@c@c_@b@o@t@t@o@m@s@i@d@e@c@o@m@p@a@r@a@t@o@r
+vCC_COMPARATOR_SIDE
+R12
+!i10b 1
+!s100 z?<if1IlZ1gdzG<a1M`An3
+IeXJRUg[c_gG?5^[zg]H6n3
+R2
+R0
+w1669049127
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_COMPARATOR_SIDE.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_COMPARATOR_SIDE.v
+R3
+R4
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_COMPARATOR_SIDE.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_COMPARATOR_SIDE.v|
+!i113 1
+R6
+R11
+R7
+n@c@c_@c@o@m@p@a@r@a@t@o@r_@s@i@d@e
+vCC_COMPARATORCRASH
+R1
+!i10b 1
+!s100 ANo5@Z`W3<R<`a=e8^L352
+In3i>=>_:_hI?c`S7kojCe0
+R2
+R0
+w1667762009
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_COMPARATORCRASH.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_COMPARATORCRASH.v
+R3
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_COMPARATORCRASH.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_COMPARATORCRASH.v|
+!i113 1
+R6
+R11
+R7
+n@c@c_@c@o@m@p@a@r@a@t@o@r@c@r@a@s@h
+vCC_FILTER
+R1
+!i10b 1
+!s100 VE4G>;T0NBFnQ<HDYB00z0
+Ia^5`=5PM8iBV@?PcXTC9R3
+R2
+R0
+w1667748708
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_FILTER.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_FILTER.v
+R3
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_FILTER.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_FILTER.v|
+!i113 1
+R6
+R11
+R7
+n@c@c_@f@i@l@t@e@r
+vCC_SEVENSEG1
+R8
+!i10b 1
+!s100 U;OI0BK_N[TU?J^bM9E360
+I_Mmj9F3DI2LMLG8Sb232c3
+R2
+R0
+w1553875284
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_SEVENSEG1.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_SEVENSEG1.v
+L0 24
+R4
+r1
+!s85 0
+31
+R10
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_SEVENSEG1.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_SEVENSEG1.v|
+!i113 1
+R6
+R11
+R7
+n@c@c_@s@e@v@e@n@s@e@g1
+vCC_SPEEDCOMPARATOR
+R8
+!i10b 1
+!s100 RLNm[74NZN=bGi^P;zI^e3
+IzL`La36gL@C]:9]ED9lBW3
+R2
+R0
+w1667759573
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_SPEEDCOMPARATOR.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_SPEEDCOMPARATOR.v
+R3
+R4
+r1
+!s85 0
+31
+R10
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_SPEEDCOMPARATOR.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/CC_SPEEDCOMPARATOR.v|
+!i113 1
+R6
+R11
+R7
+n@c@c_@s@p@e@e@d@c@o@m@p@a@r@a@t@o@r
+vmatrix_ctrl
+R8
+!i10b 1
+!s100 e8fJ::8FZhBf=Yo62HC<D0
+I8aOW5njhZ;M[UifcUI_:33
+R2
+R0
+w1554920989
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/max7219_ctrl.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/max7219_ctrl.v
+L0 18
+R4
+r1
+!s85 0
+31
+R10
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/max7219_ctrl.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/max7219_ctrl.v|
+!i113 1
+R6
+R11
+R7
+vSC_DEBOUNCE1
+R8
+!i10b 1
+!s100 R1A>6;z02mNBGFV[E4kge0
+I]P1iki=6V_UdDJf?`ZZJH1
+R2
+R0
+w1550072613
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_DEBOUNCE1.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_DEBOUNCE1.v
+L0 44
+R4
+r1
+!s85 0
+31
+R10
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_DEBOUNCE1.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_DEBOUNCE1.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@d@e@b@o@u@n@c@e1
+vSC_IMAGECOUNTER
+R12
+!i10b 1
+!s100 MXjZQWBG8nQ:2V7VHW3G42
+I927M>3gGA>5;5BgQY>D110
+R2
+R0
+w1668304895
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_IMAGECOUNTER.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_IMAGECOUNTER.v
+R3
+R4
+r1
+!s85 0
+31
+Z14 !s108 1669078791.000000
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_IMAGECOUNTER.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_IMAGECOUNTER.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@i@m@a@g@e@c@o@u@n@t@e@r
+vSC_LEVELCOUNTER
+Z15 !s110 1669078791
+!i10b 1
+!s100 JL5J5NQ5XTf4M1;XIiIYQ3
+I`;UUlF:NATiF3ObKN0cK42
+R2
+R0
+w1669038955
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_LEVELCOUNTER.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_LEVELCOUNTER.v
+R3
+R4
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_LEVELCOUNTER.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_LEVELCOUNTER.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@l@e@v@e@l@c@o@u@n@t@e@r
+vSC_LIFECOUNTER
+R15
+!i10b 1
+!s100 2l16goU21d@m9P3Qg0?b<0
+IZl;R8jDe6IH]H8]PmHP`>0
+R2
+R0
+w1668304768
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_LIFECOUNTER.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_LIFECOUNTER.v
+R3
+R4
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_LIFECOUNTER.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_LIFECOUNTER.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@l@i@f@e@c@o@u@n@t@e@r
+vSC_RANDOM
+R12
+!i10b 1
+!s100 7@H=eSfVkB[f4PL6Dlh<90
+I4W1^Bk7V4Z]Ug93e>3F3m0
+R2
+R0
+w1668882815
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RANDOM.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RANDOM.v
+L0 3
+R4
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RANDOM.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RANDOM.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@r@a@n@d@o@m
+vSC_RegBACKGTYPE_14
+R1
+!i10b 1
+!s100 z][<NBh[HOSFVf=i]>9GH3
+IhfNoAY9S4Ej<Rd`J5kfL20
+R2
+R0
+w1667744405
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_14.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_14.v
+R3
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_14.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_14.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@reg@b@a@c@k@g@t@y@p@e_14
+vSC_RegBACKGTYPE_26
+R1
+!i10b 1
+!s100 ?3iHS@[Y;5`W<>D_JoSTH3
+IYgXzjMFJ@cT<MDX@P>`1d3
+R2
+R0
+w1669065363
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_26.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_26.v
+R3
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_26.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_26.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@reg@b@a@c@k@g@t@y@p@e_26
+vSC_RegBACKGTYPE_913
+R1
+!i10b 1
+!s100 Rk@<=5jZ51fQ:`=^<]96H2
+IK2Z9Q[nNAX3I@Q]KW0T1K2
+R2
+R0
+w1669069316
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_913.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_913.v
+R3
+R4
+r1
+!s85 0
+31
+R5
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_913.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegBACKGTYPE_913.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@reg@b@a@c@k@g@t@y@p@e_913
+vSC_RegPOINTTYPE
+R8
+!i10b 1
+!s100 2JDSTFAOzbf7H58J]Qhh;1
+I5Dc`9EVhk1;GTX7T=FG4A2
+R2
+R0
+w1668020042
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegPOINTTYPE.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegPOINTTYPE.v
+R3
+R4
+r1
+!s85 0
+31
+Z16 !s108 1669078788.000000
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegPOINTTYPE.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_RegPOINTTYPE.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@reg@p@o@i@n@t@t@y@p@e
+vSC_STATEMACHINEBACKG
+Z17 !s110 1669078788
+!i10b 1
+!s100 4z3=fZ^kizY=25bAS__@81
+IUb^31GAT;USX7dFGl=ida3
+R2
+R0
+w1669071107
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEBACKG.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEBACKG.v
+R3
+R4
+r1
+!s85 0
+31
+R16
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEBACKG.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEBACKG.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@s@t@a@t@e@m@a@c@h@i@n@e@b@a@c@k@g
+vSC_STATEMACHINEIMAGE
+R15
+!i10b 1
+!s100 A@I]G`@AAdn35`R1IKVjL3
+Ic[TP:O1>mf5U9lG<J>NZ53
+R2
+R0
+w1669077989
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEIMAGE.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEIMAGE.v
+R3
+R4
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEIMAGE.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEIMAGE.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@s@t@a@t@e@m@a@c@h@i@n@e@i@m@a@g@e
+vSC_STATEMACHINEMAIN
+R15
+!i10b 1
+!s100 1L@3hK5TT>lzO?IaHSYH22
+IVK:TNHin50Y?<eF2]gcfc3
+R2
+R0
+w1669068298
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEMAIN.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEMAIN.v
+R3
+R4
+r1
+!s85 0
+31
+R14
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEMAIN.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEMAIN.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@s@t@a@t@e@m@a@c@h@i@n@e@m@a@i@n
+vSC_STATEMACHINEPOINT
+R17
+!i10b 1
+!s100 RO^:]QJXO9aZD[j784z5m2
+Ih^VTd[Ui]zZeg;^EdJV8C2
+R2
+R0
+w1669049990
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEPOINT.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEPOINT.v
+R3
+R4
+r1
+!s85 0
+31
+R16
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEPOINT.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_STATEMACHINEPOINT.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_@s@t@a@t@e@m@a@c@h@i@n@e@p@o@i@n@t
+vSC_upSPEEDCOUNTER
+R8
+!i10b 1
+!s100 VkkleRTVbL8_7:oRB>?MI3
+I?1l[:;:0lX8UBk5^OOF<N0
+R2
+R0
+w1667751668
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_upSPEEDCOUNTER.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_upSPEEDCOUNTER.v
+R3
+R4
+r1
+!s85 0
+31
+R10
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_upSPEEDCOUNTER.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/SC_upSPEEDCOUNTER.v|
+!i113 1
+R6
+R11
+R7
+n@s@c_up@s@p@e@e@d@c@o@u@n@t@e@r
+vshift_reg_start_done
+R12
+!i10b 1
+!s100 P[k=OFn:ZJUAdXXFS>kmX1
+Ion3O`PZEB8iNh<GWDz7WB3
+R2
+R0
+w1554920993
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/shift_reg_start_done.v
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/shift_reg_start_done.v
+L0 34
+R4
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/shift_reg_start_done.v|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/rtl/shift_reg_start_done.v|
+!i113 1
+R6
+R11
+R7
+vTB_SYSTEM
+R12
+!i10b 1
+!s100 QF9H7YLBENRF9cGZezJd22
+I1FcCOe>mYT^4a?<d^gI]23
+R2
+R0
+w1669076088
+8C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/simulation/modelsim/TB_SYSTEM.vt
+FC:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/simulation/modelsim/TB_SYSTEM.vt
+R9
+R4
+r1
+!s85 0
+31
+R13
+!s107 C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/simulation/modelsim/TB_SYSTEM.vt|
+!s90 -reportprogress|300|-vlog01compat|-work|work|+incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/simulation/modelsim|C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/simulation/modelsim/TB_SYSTEM.vt|
+!i113 1
+R6
+!s92 -vlog01compat -work work +incdir+C:/Users/geron/OneDrive/Escritorio/PRJ_FROGGER/simulation/modelsim
+R7
+n@t@b_@s@y@s@t@e@m

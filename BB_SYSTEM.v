@@ -1,0 +1,857 @@
+/*######################################################################
+//#	G0B1T: HDL EXAMPLES. 2018.
+//######################################################################
+//# Copyright (C) 2018. F.E.Segura-Quijano (FES) fsegura@uniandes.edu.co
+//# 
+//# This program is free software: you can redistribute it and/or modify
+//# it under the terms of the GNU General Public License as published by
+//# the Free Software Foundation, version 3 of the License.
+//#
+//# This program is distributed in the hope that it will be useful,
+//# but WITHOUT ANY WARRANTY; without even the implied warranty of
+//# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//# GNU General Public License for more details.
+//#
+//# You should have received a copy of the GNU General Public License
+//# along with this program.  If not, see <http://www.gnu.org/licenses/>
+//####################################################################*/
+//=======================================================
+//  MODULE Definition
+//=======================================================
+module BB_SYSTEM (
+//////////// OUTPUTS //////////
+	BB_SYSTEM_display_OutBUS,
+	BB_SYSTEM_max7219DIN_Out,
+	BB_SYSTEM_max7219NCS_Out,
+	BB_SYSTEM_max7219CLK_Out,
+
+//////////// INPUTS //////////
+	BB_SYSTEM_CLOCK_50,
+	BB_SYSTEM_RESET_InHigh,
+	BB_SYSTEM_startButton_InLow, 
+	BB_SYSTEM_upButton_InLow,
+	BB_SYSTEM_downButton_InLow,
+	BB_SYSTEM_leftButton_InLow,
+	BB_SYSTEM_rightButton_InLow
+);
+//=======================================================
+//  PARAMETER declarations
+//=======================================================
+ parameter DATAWIDTH_BUS = 8;
+ parameter DATAWIDTH_BUS12 = 12;
+ parameter PRESCALER_DATAWIDTH = 26;
+ parameter DISPLAY_DATAWIDTH = 12;
+ 
+ parameter DATA_FIXED_INITREGPOINT_1 = 8'b00000000;
+ parameter DATA_FIXED_INITREGPOINT_0 = 8'b00010000;
+ 
+ parameter DATA_FIXED_INITREGBACKG_12 = 12'b00111001110;
+ parameter DATA_FIXED_INITREGBACKG_11 = 12'b11001110000;
+
+ parameter DATA_FIXED_INITREGBACKG_9 = 12'b110000001110;
+ parameter DATA_FIXED_INITREGBACKG_8 = 12'b001110000000;
+ 
+ parameter DATA_FIXED_INITREGBACKG_6 = 12'b011100011000;
+ parameter DATA_FIXED_INITREGBACKG_5 = 12'b100001110000;
+ 
+ parameter DATA_FIXED_INITREGBACKG_3 = 12'b000111000000;
+ parameter DATA_FIXED_INITREGBACKG_2 = 12'b011100011100;
+
+ parameter DATA_FIXED_INITREGBACKG_0 = 8'b00000000;
+  
+//=======================================================
+//  PORT declarations
+//=======================================================
+output		[DISPLAY_DATAWIDTH-1:0] BB_SYSTEM_display_OutBUS;
+
+output		BB_SYSTEM_max7219DIN_Out;
+output		BB_SYSTEM_max7219NCS_Out;
+output		BB_SYSTEM_max7219CLK_Out;
+
+input		BB_SYSTEM_CLOCK_50;
+input		BB_SYSTEM_RESET_InHigh;
+input		BB_SYSTEM_startButton_InLow;
+input		BB_SYSTEM_upButton_InLow;
+input		BB_SYSTEM_downButton_InLow;
+input		BB_SYSTEM_leftButton_InLow;
+input		BB_SYSTEM_rightButton_InLow;
+//=======================================================
+//  REG/WIRE declarations
+//=======================================================
+// BUTTONs
+wire 	BB_SYSTEM_startButton_InLow_cwire;
+wire 	BB_SYSTEM_upButton_InLow_cwire;
+
+
+wire 	BB_SYSTEM_downButton_InLow_cwire;
+wire 	BB_SYSTEM_leftButton_InLow_cwire;
+wire 	BB_SYSTEM_rightButton_InLow_cwire;
+
+//MAIN
+wire [3:0] STATEMACHINEMAIN_dataI_cwire;
+wire [1:0] STATEMACHINEMAIN_changeP_cwire;
+wire [DATAWIDTH_BUS-1:0] STATEMACHINEMAIN_data14_cwire;
+wire [1:0] STATEMACHINEMAIN_lifeNew_cwire;
+wire [2:0] STATEMACHINEMAIN_levelNew_cwire;
+wire STATEMACHINEMAIN_lifeC_cwire;
+wire [2:0] STATEMACHINEMAIN_levelC_cwire;
+wire STATEMACHINEMAIN_reset_cwire;
+
+//IMAGE
+wire STATEMACHINEIMAGE_finish_cwire;
+wire STATEMACHINEIMAGE_timer_cwire;
+wire [PRESCALER_DATAWIDTH-1:0] upSPEEDCOUNTER_data_BUS1_wire;
+wire SPEEDCOMPARATOR_2_STATEMACHINEIMAGE_T0_cwire;
+wire [PRESCALER_DATAWIDTH-1:0] STATEMACHINEIMAGE_limit_cwire;
+wire [1:0] STATEMACHINE_counter_cwire;
+wire [2:0] COUNTER_count_cwire;
+
+wire [DATAWIDTH_BUS-1:0] MUX_IMG7_cwire;
+wire [DATAWIDTH_BUS-1:0] MUX_IMG6_cwire;
+wire [DATAWIDTH_BUS-1:0] MUX_IMG5_cwire;
+wire [DATAWIDTH_BUS-1:0] MUX_IMG4_cwire;
+wire [DATAWIDTH_BUS-1:0] MUX_IMG3_cwire;
+wire [DATAWIDTH_BUS-1:0] MUX_IMG2_cwire;
+wire [DATAWIDTH_BUS-1:0] MUX_IMG1_cwire;
+wire [DATAWIDTH_BUS-1:0] MUX_IMG0_cwire;
+
+//POINT
+wire  STATEMACHINEPOINT_changeP_cwire;
+wire	STATEMACHINEPOINT_clear_cwire;
+wire	STATEMACHINEPOINT_load0_cwire;
+wire	STATEMACHINEPOINT_load1_cwire;
+wire	[1:0] STATEMACHINEPOINT_shiftselection_cwire;
+
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data14_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data13_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data12_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data11_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data10_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data9_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data8_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data7_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data6_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data5_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data4_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data3_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data2_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data1_Out;
+wire [DATAWIDTH_BUS-1:0] RegPOINTTYPE_2_POINTMATRIX_data0_Out;
+
+//BACKGROUNG 
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data14_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data13_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data12_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data11_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data10_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data9_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data8_Out; 
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data7_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data6_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data5_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data4_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data3_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data2_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data1_Out;
+wire [DATAWIDTH_BUS-1:0] RegBACKGTYPE_2_BACKGMATRIX_data0_Out;
+
+wire [PRESCALER_DATAWIDTH-1:0] upSPEEDCOUNTER_data_BUS_wire;
+wire SPEEDCOMPARATOR_2_STATEMACHINEBACKG_T0_cwire;
+wire STATEMACHINEBACKG_clear_cwire;
+wire STATEMACHINEBACKG_load_cwire;
+wire [1:0] STATEMACHINEBACKG_shiftselection_cwire;
+wire STATEMACHINEBACKG_upcount_cwire;
+wire [PRESCALER_DATAWIDTH-1:0] STATEMACHINEBACKG_limit_cwire;
+wire [7:0] RANDOM_number_cwire;
+
+//BOTTOMSIDE COMPARATOR
+wire BOTTOMSIDECOMPARATOR_2_STATEMACHINEBACKG_bottomside_cwire;
+wire [1:0] COMPARATORSIDE_side_cwire;
+
+//MATRIX
+wire [1:0] COMPARATORCRASH_Out_Bus_cwire;
+wire COMPARATORLOCATION_Out_cwire;
+
+// GAME
+wire [DATAWIDTH_BUS-1:0] regGAME_data7_wire;
+wire [DATAWIDTH_BUS-1:0] regGAME_data6_wire;
+wire [DATAWIDTH_BUS-1:0] regGAME_data5_wire;
+wire [DATAWIDTH_BUS-1:0] regGAME_data4_wire;
+wire [DATAWIDTH_BUS-1:0] regGAME_data3_wire;
+wire [DATAWIDTH_BUS-1:0] regGAME_data2_wire;
+wire [DATAWIDTH_BUS-1:0] regGAME_data1_wire;
+wire [DATAWIDTH_BUS-1:0] regGAME_data0_wire;
+
+wire 	[7:0] data_max;
+wire 	[2:0] add;
+
+wire [DATAWIDTH_BUS-1:0] upCOUNTER_2_BIN2BCD1_data_BUS_wire;
+wire [DISPLAY_DATAWIDTH-1:0] BIN2BCD1_2_SEVENSEG1_data_BUS_wire;
+
+//=======================================================
+//  Structural coding
+//=======================================================
+
+//######################################################################
+//#	INPUTS
+//######################################################################
+SC_DEBOUNCE1 SC_DEBOUNCE1_u0 (
+// port map - connection between master ports and signals/registers   
+	.SC_DEBOUNCE1_button_Out(BB_SYSTEM_startButton_InLow_cwire),
+	.SC_DEBOUNCE1_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_DEBOUNCE1_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_DEBOUNCE1_button_In(~BB_SYSTEM_startButton_InLow)
+);
+SC_DEBOUNCE1 SC_DEBOUNCE1_u1 (
+// port map - connection between master ports and signals/registers   
+	.SC_DEBOUNCE1_button_Out(BB_SYSTEM_upButton_InLow_cwire),
+	.SC_DEBOUNCE1_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_DEBOUNCE1_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_DEBOUNCE1_button_In(~BB_SYSTEM_upButton_InLow)
+);
+SC_DEBOUNCE1 SC_DEBOUNCE1_u2 (
+// port map - connection between master ports and signals/registers   
+	.SC_DEBOUNCE1_button_Out(BB_SYSTEM_downButton_InLow_cwire),
+	.SC_DEBOUNCE1_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_DEBOUNCE1_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_DEBOUNCE1_button_In(~BB_SYSTEM_downButton_InLow)
+);
+SC_DEBOUNCE1 SC_DEBOUNCE1_u3 (
+// port map - connection between master ports and signals/registers   
+	.SC_DEBOUNCE1_button_Out(BB_SYSTEM_leftButton_InLow_cwire),
+	.SC_DEBOUNCE1_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_DEBOUNCE1_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_DEBOUNCE1_button_In(~BB_SYSTEM_leftButton_InLow)
+);
+SC_DEBOUNCE1 SC_DEBOUNCE1_u4 (
+// port map - connection between master ports and signals/registers   
+	.SC_DEBOUNCE1_button_Out(BB_SYSTEM_rightButton_InLow_cwire),
+	.SC_DEBOUNCE1_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_DEBOUNCE1_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_DEBOUNCE1_button_In(~BB_SYSTEM_rightButton_InLow)
+);
+//######################################################################
+//#	MAIN
+//######################################################################
+
+SC_STATEMACHINEMAIN SC_STATEMACHINEMAIN_u0(
+
+	.SC_STATEMACHINEMAIN_dataI_OutBus(STATEMACHINEMAIN_dataI_cwire),
+	.SC_STATEMACHINEMAIN_changeP_OutBus(STATEMACHINEMAIN_changeP_cwire),
+	.SC_STATEMACHINEMAIN_data14_OutBus(STATEMACHINEMAIN_data14_cwire),
+	.SC_STATEMACHINEMAIN_lifeC_OutBus(STATEMACHINEMAIN_lifeC_cwire),
+	.SC_STATEMACHINEMAIN_levelC_OutBus(STATEMACHINEMAIN_levelC_cwire),
+	.SC_STATEMACHINEMAIN_reset_OutBit(STATEMACHINEMAIN_reset_cwire),
+	.SC_STATEMACHINEMAIN_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_STATEMACHINEMAIN_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_STATEMACHINEMAIN_startButton_InLow(BB_SYSTEM_startButton_InLow_cwire),
+	.SC_STATEMACHINEMAIN_upButton_InLow(BB_SYSTEM_upButton_InLow_cwire),
+	.SC_STATEMACHINEMAIN_downButton_InLow(BB_SYSTEM_downButton_InLow_cwire),
+	.SC_STATEMACHINEMAIN_leftButton_InLow(BB_SYSTEM_leftButton_InLow_cwire),
+	.SC_STATEMACHINEMAIN_rightButton_InLow(BB_SYSTEM_rightButton_InLow_cwire),
+	.SC_STATEMACHINEMAIN_crash_InBus(COMPARATORCRASH_Out_Bus_cwire),
+	.SC_STATEMACHINEMAIN_POINTMATRIX_data14_InBus(RegPOINTTYPE_2_POINTMATRIX_data14_Out),
+	.SC_STATEMACHINEMAIN_BACKGMATRIX_data14_InBus(RegBACKGTYPE_2_BACKGMATRIX_data14_Out),
+	.SC_STATEMACHINEMAIN_lifeC_InBus(STATEMACHINEMAIN_lifeNew_cwire),
+	.SC_STATEMACHINEMAIN_levelC_InBus(STATEMACHINEMAIN_levelNew_cwire),
+	.SC_STATEMACHINEMAIN_finishI_InLow(STATEMACHINEIMAGE_finish_cwire)
+);
+
+SC_LIFECOUNTER SC_LIFECOUNTER_u0(
+	.SC_LIFE_COUNTER_data_OutBUS(STATEMACHINEMAIN_lifeNew_cwire),
+	.SC_LIFE_COUNTER_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_LIFE_COUNTER_RESET_InHigh(STATEMACHINEMAIN_reset_cwire),
+	.SC_LIFE_COUNTER_CUENTA_InLow(STATEMACHINEMAIN_lifeC_cwire)
+);
+
+SC_LEVELCOUNTER SC_LEVELCOUNTER_u0(
+	.SC_LEVEL_COUNTER_data_OutBUS(STATEMACHINEMAIN_levelNew_cwire),
+	.SC_LEVEL_COUNTER_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_LEVEL_COUNTER_RESET_InHigh(STATEMACHINEMAIN_reset_cwire),
+	.SC_LEVEL_COUNTER_CUENTA_InLow(STATEMACHINEMAIN_levelC_cwire)
+);
+
+//######################################################################
+//#	IMAGE
+//######################################################################
+
+SC_STATEMACHINEIMAGE SC_STATEMACHINEIMAGE_u0(
+	.SC_STATEMACHINEIMAGE_timer_OutBus(STATEMACHINEIMAGE_timer_cwire),
+	.SC_STATEMACHINEIMAGE_finish_OutLow(STATEMACHINEIMAGE_finish_cwire),
+	.SC_STATEMACHINEIMAGE_data0_OutBus(MUX_IMG0_cwire),
+	.SC_STATEMACHINEIMAGE_data1_OutBus(MUX_IMG1_cwire),
+	.SC_STATEMACHINEIMAGE_data2_OutBus(MUX_IMG2_cwire),
+	.SC_STATEMACHINEIMAGE_data3_OutBus(MUX_IMG3_cwire),
+	.SC_STATEMACHINEIMAGE_data4_OutBus(MUX_IMG4_cwire),
+	.SC_STATEMACHINEIMAGE_data5_OutBus(MUX_IMG5_cwire),
+	.SC_STATEMACHINEIMAGE_data6_OutBus(MUX_IMG6_cwire),
+	.SC_STATEMACHINEIMAGE_data7_OutBus(MUX_IMG7_cwire),
+	.SC_STATEMACHINEIMAGE_counter_OutBus(STATEMACHINE_counter_cwire),
+	.SC_STATEMACHINEIMAGE_limit_OutBus(STATEMACHINEIMAGE_limit_cwire),
+	.SC_STATEMACHINEIMAGE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_STATEMACHINEIMAGE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_STATEMACHINEIMAGE_timer_InLow(SPEEDCOMPARATOR_2_STATEMACHINEIMAGE_T0_cwire),
+	.SC_STATEMACHINEIMAGE_dataI_InBus(STATEMACHINEMAIN_dataI_cwire),
+	.SC_STATEMACHINEIMAGE_counter_InBus(COUNTER_count_cwire)
+);
+
+SC_IMAGECOUNTER SC_IMAGECOUNTER_u0 (
+	.SC_IMAGE_COUNTER_data_OutBUS(COUNTER_count_cwire),
+	.SC_IMAGE_COUNTER_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_IMAGE_COUNTER_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_IMAGE_COUNTER_CUENTA_InBus(STATEMACHINE_counter_cwire)
+);
+//######################################################################
+//#	POINT
+//######################################################################
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u14 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data14_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data13_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data0_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(DATA_FIXED_INITREGPOINT_1)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u13 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data13_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data12_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data14_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(DATA_FIXED_INITREGPOINT_1)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u12 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data12_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data11_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data13_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(DATA_FIXED_INITREGPOINT_1)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u11 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data11_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data10_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data12_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(DATA_FIXED_INITREGPOINT_1)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u10 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data10_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data9_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data11_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(DATA_FIXED_INITREGPOINT_1)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u9 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data9_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data8_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data10_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(DATA_FIXED_INITREGPOINT_1)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u8 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data8_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data7_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data9_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(DATA_FIXED_INITREGPOINT_1)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u7 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data7_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data6_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data8_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(MUX_IMG7_cwire)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u6 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data6_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data5_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data7_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(MUX_IMG6_cwire)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u5 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data5_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data4_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data6_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(MUX_IMG5_cwire)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u4 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data4_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data3_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data5_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(MUX_IMG4_cwire)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u3 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data3_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data2_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data4_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(MUX_IMG3_cwire)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u2 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data2_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data1_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data3_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(MUX_IMG2_cwire)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_1)) SC_RegPOINTTYPE_u1 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data1_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data0_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data2_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(MUX_IMG1_cwire)
+);
+SC_RegPOINTTYPE #(.RegPOINTTYPE_DATAWIDTH(DATAWIDTH_BUS), .DATA_FIXED_INITREGPOINT(DATA_FIXED_INITREGPOINT_0)) SC_RegPOINTTYPE_u0 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegPOINTTYPE_data_OutBUS(RegPOINTTYPE_2_POINTMATRIX_data0_Out),
+	.SC_RegPOINTTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegPOINTTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegPOINTTYPE_changeP_InLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_RegPOINTTYPE_clear_InLow(STATEMACHINEPOINT_clear_cwire),
+	.SC_RegPOINTTYPE_load0_InLow(STATEMACHINEPOINT_load0_cwire),
+	.SC_RegPOINTTYPE_load1_InLow(STATEMACHINEPOINT_load1_cwire),
+	.SC_RegPOINTTYPE_shiftselection_In(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_RegPOINTTYPE_data0_InBUS(RegPOINTTYPE_2_POINTMATRIX_data14_Out),
+	.SC_RegPOINTTYPE_data1_InBUS(RegPOINTTYPE_2_POINTMATRIX_data1_Out),
+	.SC_RegPOINTTYPE_dataI_InBUS(MUX_IMG0_cwire)
+);
+
+SC_STATEMACHINEPOINT SC_STATEMACHINEPOINT_u0 (
+// port map - connection between master ports and signals/registers
+	.SC_STATEMACHINEPOINT_changeP_OutLow(STATEMACHINEPOINT_changeP_cwire),
+	.SC_STATEMACHINEPOINT_clear_OutLow(STATEMACHINEPOINT_clear_cwire), 
+	.SC_STATEMACHINEPOINT_load0_OutLow(STATEMACHINEPOINT_load0_cwire), 
+	.SC_STATEMACHINEPOINT_load1_OutLow(STATEMACHINEPOINT_load1_cwire), 
+	.SC_STATEMACHINEPOINT_shiftselection_Out(STATEMACHINEPOINT_shiftselection_cwire),
+	.SC_STATEMACHINEPOINT_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_STATEMACHINEPOINT_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_STATEMACHINEPOINT_upButton_InLow(BB_SYSTEM_upButton_InLow_cwire), 
+	.SC_STATEMACHINEPOINT_downButton_InLow(BB_SYSTEM_downButton_InLow_cwire), 
+	.SC_STATEMACHINEPOINT_leftButton_InLow(BB_SYSTEM_leftButton_InLow_cwire), 
+	.SC_STATEMACHINEPOINT_rightButton_InLow(BB_SYSTEM_rightButton_InLow_cwire), 
+	.SC_STATEMACHINEPOINT_bottomsidecomparator_InLow(BOTTOMSIDECOMPARATOR_2_STATEMACHINEBACKG_bottomside_cwire),
+	.SC_STATEMACHINEPOINT_sidecomparator_InBus(COMPARATORSIDE_side_cwire),
+	.SC_STATEMACHINEPOINT_changeP_InBus(STATEMACHINEMAIN_changeP_cwire)
+);
+
+//######################################################################
+//#	BACKGROUND
+//######################################################################
+SC_RegBACKGTYPE_14 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS)) SC_RegBACKGTYPE_14_u0 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_14_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data14_Out),
+	.SC_RegBACKGTYPE_14_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_14_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_14_data_InBUS(STATEMACHINEMAIN_data14_cwire)
+);
+
+assign RegBACKGTYPE_2_BACKGMATRIX_data13_Out = DATA_FIXED_INITREGBACKG_0;
+
+SC_RegBACKGTYPE_913 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS12), .DATA_FIXED_INITREGBACKG(DATA_FIXED_INITREGBACKG_12)) SC_RegBACKGTYPE_913_u3 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data12_Out),
+	.SC_RegBACKGTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_clear_InLow(STATEMACHINEBACKG_clear_cwire),	
+	.SC_RegBACKGTYPE_load_InLow(STATEMACHINEBACKG_load_cwire),
+	.SC_RegBACKGTYPE_shiftselection_In(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_RegBACKGTYPE_data_InBUS(DATA_FIXED_INITREGBACKG_12),
+	.SC_RegBACKGTYPE_random_InBUS(RANDOM_number_cwire[6:3])
+);
+
+SC_RegBACKGTYPE_26 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS12), .DATA_FIXED_INITREGBACKG(DATA_FIXED_INITREGBACKG_9)) SC_RegBACKGTYPE_26_u3 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data9_Out),
+	.SC_RegBACKGTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_clear_InLow(STATEMACHINEBACKG_clear_cwire),	
+	.SC_RegBACKGTYPE_load_InLow(STATEMACHINEBACKG_load_cwire),
+	.SC_RegBACKGTYPE_shiftselection_In(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_RegBACKGTYPE_data_InBUS(DATA_FIXED_INITREGBACKG_9),
+	.SC_RegBACKGTYPE_random_InBUS(RANDOM_number_cwire[5:2])
+);
+
+assign RegBACKGTYPE_2_BACKGMATRIX_data10_Out = DATA_FIXED_INITREGBACKG_0;
+
+SC_RegBACKGTYPE_913 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS12), .DATA_FIXED_INITREGBACKG(DATA_FIXED_INITREGBACKG_11)) SC_RegBACKGTYPE_913_u2 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data11_Out),
+	.SC_RegBACKGTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_clear_InLow(STATEMACHINEBACKG_clear_cwire),	
+	.SC_RegBACKGTYPE_load_InLow(STATEMACHINEBACKG_load_cwire),
+	.SC_RegBACKGTYPE_shiftselection_In(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_RegBACKGTYPE_data_InBUS(DATA_FIXED_INITREGBACKG_11),
+	.SC_RegBACKGTYPE_random_InBUS(RANDOM_number_cwire[4:1])
+);
+
+SC_RegBACKGTYPE_26 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS12), .DATA_FIXED_INITREGBACKG(DATA_FIXED_INITREGBACKG_8)) SC_RegBACKGTYPE_26_u1 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data8_Out),
+	.SC_RegBACKGTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_clear_InLow(STATEMACHINEBACKG_clear_cwire),	
+	.SC_RegBACKGTYPE_load_InLow(STATEMACHINEBACKG_load_cwire),
+	.SC_RegBACKGTYPE_shiftselection_In(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_RegBACKGTYPE_data_InBUS(DATA_FIXED_INITREGBACKG_8),
+	.SC_RegBACKGTYPE_random_InBUS(RANDOM_number_cwire[3:0])
+);
+
+assign RegBACKGTYPE_2_BACKGMATRIX_data7_Out = DATA_FIXED_INITREGBACKG_0;
+
+SC_RegBACKGTYPE_913 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS12), .DATA_FIXED_INITREGBACKG(DATA_FIXED_INITREGBACKG_6)) SC_RegBACKGTYPE_913_u1 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data6_Out),
+	.SC_RegBACKGTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_clear_InLow(STATEMACHINEBACKG_clear_cwire),	
+	.SC_RegBACKGTYPE_load_InLow(STATEMACHINEBACKG_load_cwire),
+	.SC_RegBACKGTYPE_shiftselection_In(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_RegBACKGTYPE_data_InBUS(DATA_FIXED_INITREGBACKG_6),
+	.SC_RegBACKGTYPE_random_InBUS(RANDOM_number_cwire[6:3])
+);
+SC_RegBACKGTYPE_26 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS12), .DATA_FIXED_INITREGBACKG(DATA_FIXED_INITREGBACKG_3)) SC_RegBACKGTYPE_26_u2 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data3_Out),
+	.SC_RegBACKGTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_clear_InLow(STATEMACHINEBACKG_clear_cwire),	
+	.SC_RegBACKGTYPE_load_InLow(STATEMACHINEBACKG_load_cwire),
+	.SC_RegBACKGTYPE_shiftselection_In(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_RegBACKGTYPE_data_InBUS(DATA_FIXED_INITREGBACKG_3),
+	.SC_RegBACKGTYPE_random_InBUS(RANDOM_number_cwire[5:2])
+);
+
+assign RegBACKGTYPE_2_BACKGMATRIX_data4_Out = DATA_FIXED_INITREGBACKG_0;
+
+SC_RegBACKGTYPE_913 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS12), .DATA_FIXED_INITREGBACKG(DATA_FIXED_INITREGBACKG_5)) SC_RegBACKGTYPE_913_u0 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data5_Out),
+	.SC_RegBACKGTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_clear_InLow(STATEMACHINEBACKG_clear_cwire),	
+	.SC_RegBACKGTYPE_load_InLow(STATEMACHINEBACKG_load_cwire),
+	.SC_RegBACKGTYPE_shiftselection_In(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_RegBACKGTYPE_data_InBUS(DATA_FIXED_INITREGBACKG_5),
+	.SC_RegBACKGTYPE_random_InBUS(RANDOM_number_cwire[4:1])
+);
+SC_RegBACKGTYPE_26 #(.RegBACKGTYPE_DATAWIDTH(DATAWIDTH_BUS12), .DATA_FIXED_INITREGBACKG(DATA_FIXED_INITREGBACKG_2)) SC_RegBACKGTYPE_26_u0 (
+// port map - connection between master ports and signals/registers   
+	.SC_RegBACKGTYPE_data_OutBUS(RegBACKGTYPE_2_BACKGMATRIX_data2_Out),
+	.SC_RegBACKGTYPE_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_RegBACKGTYPE_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_RegBACKGTYPE_clear_InLow(STATEMACHINEBACKG_clear_cwire),	
+	.SC_RegBACKGTYPE_load_InLow(STATEMACHINEBACKG_load_cwire),
+	.SC_RegBACKGTYPE_shiftselection_In(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_RegBACKGTYPE_data_InBUS(DATA_FIXED_INITREGBACKG_2),
+	.SC_RegBACKGTYPE_random_InBUS(RANDOM_number_cwire[3:0])
+);
+
+assign RegBACKGTYPE_2_BACKGMATRIX_data1_Out = DATA_FIXED_INITREGBACKG_0;
+assign RegBACKGTYPE_2_BACKGMATRIX_data0_Out = DATA_FIXED_INITREGBACKG_0;
+
+SC_STATEMACHINEBACKG #(.SPEEDCOMPARATOR_DATAWIDTH(PRESCALER_DATAWIDTH)) SC_STATEMACHINEBACKG_u0 (
+// port map - connection between master ports and signals/registers   
+	.SC_STATEMACHINEBACKG_clear_OutLow(STATEMACHINEBACKG_clear_cwire), 
+	.SC_STATEMACHINEBACKG_load_OutLow(STATEMACHINEBACKG_load_cwire), 
+	.SC_STATEMACHINEBACKG_shiftselection_Out(STATEMACHINEBACKG_shiftselection_cwire),
+	.SC_STATEMACHINEBACKG_upcount_out(STATEMACHINEBACKG_upcount_cwire),
+	.SC_STATEMACHINEBACKG_limit_OutBus(STATEMACHINEBACKG_limit_cwire),
+	.SC_STATEMACHINEBACKG_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_STATEMACHINEBACKG_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_STATEMACHINEBACKG_T0_InLow(SPEEDCOMPARATOR_2_STATEMACHINEBACKG_T0_cwire),
+	.SC_STATEMACHINEBACKG_level_InBus(STATEMACHINEMAIN_levelNew_cwire)
+);
+//#SPEED
+SC_upSPEEDCOUNTER #(.upSPEEDCOUNTER_DATAWIDTH(PRESCALER_DATAWIDTH)) SC_upSPEEDCOUNTER_u0 (
+// port map - connection between master ports and signals/registers   
+	.SC_upSPEEDCOUNTER_data_OutBUS(upSPEEDCOUNTER_data_BUS_wire),
+	.SC_upSPEEDCOUNTER_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_upSPEEDCOUNTER_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_upSPEEDCOUNTER_upcount_InLow(STATEMACHINEBACKG_upcount_cwire)
+);
+
+SC_upSPEEDCOUNTER #(.upSPEEDCOUNTER_DATAWIDTH(PRESCALER_DATAWIDTH)) SC_upSPEEDCOUNTER_u1 (
+// port map - connection between master ports and signals/registers   
+	.SC_upSPEEDCOUNTER_data_OutBUS(upSPEEDCOUNTER_data_BUS1_wire),
+	.SC_upSPEEDCOUNTER_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.SC_upSPEEDCOUNTER_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.SC_upSPEEDCOUNTER_upcount_InLow(STATEMACHINEIMAGE_timer_cwire)
+);
+
+CC_SPEEDCOMPARATOR #(.SPEEDCOMPARATOR_DATAWIDTH(PRESCALER_DATAWIDTH)) CC_SPEEDCOMPARATOR_u0 (
+	.CC_SPEEDCOMPARATOR_T0_OutLow(SPEEDCOMPARATOR_2_STATEMACHINEBACKG_T0_cwire),
+	.CC_SPEEDCOMPARATOR_data_InBUS(upSPEEDCOUNTER_data_BUS_wire),
+	.CC_SPEEDCOMPARATOR_limit_InBUS(STATEMACHINEBACKG_limit_cwire)
+);
+
+CC_SPEEDCOMPARATOR #(.SPEEDCOMPARATOR_DATAWIDTH(PRESCALER_DATAWIDTH)) CC_SPEEDCOMPARATOR_u1 (
+	.CC_SPEEDCOMPARATOR_T0_OutLow(SPEEDCOMPARATOR_2_STATEMACHINEIMAGE_T0_cwire),
+	.CC_SPEEDCOMPARATOR_data_InBUS(upSPEEDCOUNTER_data_BUS1_wire),
+	.CC_SPEEDCOMPARATOR_limit_InBUS(STATEMACHINEIMAGE_limit_cwire)
+);
+
+//######################################################################
+//#	RANDOM GENERATOR
+//######################################################################
+SC_RANDOM SC_RANDOM_u0 (
+	.clock(BB_SYSTEM_CLOCK_50),
+	.reset(BB_SYSTEM_RESET_InHigh),
+	.rnd(RANDOM_number_cwire)
+);
+//######################################################################
+//#	COMPARATOR END OF MATRIX (BOTTON SIDE)
+//######################################################################
+CC_COMPARATOR_SIDE #(.DATAWIDTH_BUS(DATAWIDTH_BUS)) CC_COMPARATOR_SIDE_u0 (
+	.CC_COMPARATOR_SIDE_LOCATION_Out_Bus(COMPARATORSIDE_side_cwire),
+	
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_0_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data0_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_1_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data1_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_2_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data2_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_3_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data3_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_4_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data4_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_5_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data5_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_6_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data6_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_7_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data7_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_8_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data8_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_9_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data9_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_10_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data10_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_11_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data11_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_12_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data12_Out),
+	.CC_COMPARATOR_SIDE_ALBERT_FROG_ROW_13_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data13_Out)
+);
+
+CC_BOTTOMSIDECOMPARATOR #(.BOTTOMSIDECOMPARATOR_DATAWIDTH(DATAWIDTH_BUS)) CC_BOTTOMSIDECOMPARATOR_u0 (
+	.CC_BOTTOMSIDECOMPARATOR_bottomside_OutLow(BOTTOMSIDECOMPARATOR_2_STATEMACHINEBACKG_bottomside_cwire),
+	.CC_BOTTOMSIDECOMPARATOR_data_InBUS0(RegPOINTTYPE_2_POINTMATRIX_data0_Out),
+	.CC_BOTTOMSIDECOMPARATOR_data_InBUS1(RegPOINTTYPE_2_POINTMATRIX_data7_Out)
+);
+
+CC_COMPARATORCRASH CC_COMPARATORCRASH_u0 (
+	.CC_COMPARADORCRASH_Out_Bus(COMPARATORCRASH_Out_Bus_cwire),
+	.CC_COMPARATORLOCATION_Out(COMPARATORLOCATION_Out_cwire),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_2_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data2_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_3_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data3_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_4_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data4_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_5_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data5_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_6_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data6_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_7_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data7_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_8_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data8_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_9_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data9_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_10_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data10_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_11_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data11_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_12_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data12_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_13_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data13_Out),
+	.CC_COMPARADORCRASH_ALBERT_FROG_ROW_14_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data14_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_2_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data2_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_3_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data3_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_4_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data4_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_5_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data5_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_6_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data6_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_9_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data9_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_10_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data10_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_11_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data11_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_12_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data12_Out),
+	.CC_COMPARADORCRASH_BACKGROUND_ROW_13_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data13_Out),
+	.CC_COMPARADORCRASH_END_GOAL_ROW_14_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data14_Out),
+	.CC_COMPARADORCRASH_IMAGE_INBUS(STATEMACHINEMAIN_changeP_cwire)
+);
+
+CC_FILTER CC_FILTER_u0(
+	.CC_FILTER_ROW_0_Out_Bus(regGAME_data0_wire),
+	.CC_FILTER_ROW_1_Out_Bus(regGAME_data1_wire),
+	.CC_FILTER_ROW_2_Out_Bus(regGAME_data2_wire),
+	.CC_FILTER_ROW_3_Out_Bus(regGAME_data3_wire),
+	.CC_FILTER_ROW_4_Out_Bus(regGAME_data4_wire),
+	.CC_FILTER_ROW_5_Out_Bus(regGAME_data5_wire),
+	.CC_FILTER_ROW_6_Out_Bus(regGAME_data6_wire),
+	.CC_FILTER_ROW_7_Out_Bus(regGAME_data7_wire),
+
+	.CC_FILTER_ALBERT_FROG_ROW_0_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data0_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_1_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data1_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_2_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data2_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_3_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data3_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_4_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data4_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_5_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data5_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_6_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data6_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_7_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data7_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_8_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data8_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_9_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data9_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_10_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data10_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_11_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data11_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_12_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data12_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_13_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data13_Out),
+	.CC_FILTER_ALBERT_FROG_ROW_14_In_Bus(RegPOINTTYPE_2_POINTMATRIX_data14_Out),
+	
+	.CC_FILTER_BACKGROUND_ROW_0_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data0_Out),
+	.CC_FILTER_BACKGROUND_ROW_1_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data1_Out),
+	.CC_FILTER_BACKGROUND_ROW_2_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data2_Out),
+	.CC_FILTER_BACKGROUND_ROW_3_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data3_Out),
+	.CC_FILTER_BACKGROUND_ROW_4_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data4_Out),
+	.CC_FILTER_BACKGROUND_ROW_5_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data5_Out),
+	.CC_FILTER_BACKGROUND_ROW_6_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data6_Out),
+	.CC_FILTER_BACKGROUND_ROW_7_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data7_Out),
+	.CC_FILTER_BACKGROUND_ROW_8_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data8_Out),
+	.CC_FILTER_BACKGROUND_ROW_9_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data9_Out),
+	.CC_FILTER_BACKGROUND_ROW_10_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data10_Out),
+	.CC_FILTER_BACKGROUND_ROW_11_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data11_Out),
+	.CC_FILTER_BACKGROUND_ROW_12_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data12_Out),
+	.CC_FILTER_BACKGROUND_ROW_13_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data13_Out),
+	.CC_FILTER_BACKGROUND_ROW_14_IN_BUS(RegBACKGTYPE_2_BACKGMATRIX_data14_Out),
+	
+	.CC_FILTER_SELECTION_INLOW(COMPARATORLOCATION_Out_cwire),
+	.CC_FILTER_IMAGE_INBUS(STATEMACHINEMAIN_changeP_cwire)
+);
+//######################################################################
+//#	TO LED MATRIZ: VISUALIZATION
+//######################################################################
+
+assign data_max =(add==3'b000)?{regGAME_data0_wire[7],regGAME_data1_wire[7],regGAME_data2_wire[7],regGAME_data3_wire[7],regGAME_data4_wire[7],regGAME_data5_wire[7],regGAME_data6_wire[7],regGAME_data7_wire[7]}:
+	       (add==3'b001)?{regGAME_data0_wire[6],regGAME_data1_wire[6],regGAME_data2_wire[6],regGAME_data3_wire[6],regGAME_data4_wire[6],regGAME_data5_wire[6],regGAME_data6_wire[6],regGAME_data7_wire[6]}:
+	       (add==3'b010)?{regGAME_data0_wire[5],regGAME_data1_wire[5],regGAME_data2_wire[5],regGAME_data3_wire[5],regGAME_data4_wire[5],regGAME_data5_wire[5],regGAME_data6_wire[5],regGAME_data7_wire[5]}:
+	       (add==3'b011)?{regGAME_data0_wire[4],regGAME_data1_wire[4],regGAME_data2_wire[4],regGAME_data3_wire[4],regGAME_data4_wire[4],regGAME_data5_wire[4],regGAME_data6_wire[4],regGAME_data7_wire[4]}:
+	       (add==3'b100)?{regGAME_data0_wire[3],regGAME_data1_wire[3],regGAME_data2_wire[3],regGAME_data3_wire[3],regGAME_data4_wire[3],regGAME_data5_wire[3],regGAME_data6_wire[3],regGAME_data7_wire[3]}:
+	       (add==3'b101)?{regGAME_data0_wire[2],regGAME_data1_wire[2],regGAME_data2_wire[2],regGAME_data3_wire[2],regGAME_data4_wire[2],regGAME_data5_wire[2],regGAME_data6_wire[2],regGAME_data7_wire[2]}:
+	       (add==3'b110)?{regGAME_data0_wire[1],regGAME_data1_wire[1],regGAME_data2_wire[1],regGAME_data3_wire[1],regGAME_data4_wire[1],regGAME_data5_wire[1],regGAME_data6_wire[1],regGAME_data7_wire[1]}:
+						{regGAME_data0_wire[0],regGAME_data1_wire[0],regGAME_data2_wire[0],regGAME_data3_wire[0],regGAME_data4_wire[0],regGAME_data5_wire[0],regGAME_data6_wire[0],regGAME_data7_wire[0]};
+									 
+matrix_ctrl matrix_ctrl_unit_0( 
+.max7219_din(BB_SYSTEM_max7219DIN_Out),//max7219_din 
+.max7219_ncs(BB_SYSTEM_max7219NCS_Out),//max7219_ncs 
+.max7219_clk(BB_SYSTEM_max7219CLK_Out),//max7219_clk
+.disp_data(data_max), 
+.disp_addr(add),
+.intensity(4'hA),
+.clk(BB_SYSTEM_CLOCK_50),
+.reset(BB_SYSTEM_RESET_InHigh) //~lowRst_System
+ ); 
+
+//######################################################################
+//#	TO 7SEG
+//######################################################################
+
+CC_BIN2BCD1 CC_BIN2BCD1_u0 (
+// port map - connection between master ports and signals/registers   
+	.CC_BIN2BCD_bcd_OutBUS(BIN2BCD1_2_SEVENSEG1_data_BUS_wire),
+	.CC_BIN2BCD_bin_InBUS({6'b0,STATEMACHINEMAIN_lifeNew_cwire})
+);
+
+CC_SEVENSEG1 CC_SEVENSEG1_u0 (
+// port map - connection between master ports and signals/registers   
+	.CC_SEVENSEG1_an(BB_SYSTEM_display_OutBUS[11:8]),
+	.CC_SEVENSEG1_a(BB_SYSTEM_display_OutBUS[0]),
+	.CC_SEVENSEG1_b(BB_SYSTEM_display_OutBUS[1]),
+	.CC_SEVENSEG1_c(BB_SYSTEM_display_OutBUS[2]),
+	.CC_SEVENSEG1_d(BB_SYSTEM_display_OutBUS[3]),
+	.CC_SEVENSEG1_e(BB_SYSTEM_display_OutBUS[4]),
+	.CC_SEVENSEG1_f(BB_SYSTEM_display_OutBUS[5]),
+	.CC_SEVENSEG1_g(BB_SYSTEM_display_OutBUS[6]),
+	.CC_SEVENSEG1_dp(BB_SYSTEM_display_OutBUS[7]),
+	.CC_SEVENSEG1_CLOCK_50(BB_SYSTEM_CLOCK_50),
+	.CC_SEVENSEG1_RESET_InHigh(BB_SYSTEM_RESET_InHigh),
+	.CC_SEVENSEG1_in0(BIN2BCD1_2_SEVENSEG1_data_BUS_wire[3:0]),
+	.CC_SEVENSEG1_in1(BIN2BCD1_2_SEVENSEG1_data_BUS_wire[7:4]),
+	.CC_SEVENSEG1_in2(BIN2BCD1_2_SEVENSEG1_data_BUS_wire[11:8]),
+	.CC_SEVENSEG1_in3(BIN2BCD1_2_SEVENSEG1_data_BUS_wire[11:8])
+);
+
+endmodule

@@ -1,0 +1,161 @@
+/*######################################################################
+//#	G0B1T: HDL EXAMPLES. 2018.
+//######################################################################
+//# Copyright (C) 2018. F.E.Segura-Quijano (FES) fsegura@uniandes.edu.co
+//# 
+//# This program is free software: you can redistribute it and/or modify
+//# it under the terms of the GNU General Public License as published by
+//# the Free Software Foundation, version 3 of the License.
+//#
+//# This program is distributed in the hope that it will be useful,
+//# but WITHOUT ANY WARRANTY; without even the implied warranty of
+//# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+//# GNU General Public License for more details.
+//#
+//# You should have received a copy of the GNU General Public License
+//# along with this program.  If not, see <http://www.gnu.org/licenses/>
+//####################################################################*/
+//=======================================================
+//  MODULE Definition
+//=======================================================
+module CC_FILTER (
+//////////// OUTPUTS //////////
+	CC_FILTER_ROW_0_Out_Bus,
+	CC_FILTER_ROW_1_Out_Bus,
+	CC_FILTER_ROW_2_Out_Bus,
+	CC_FILTER_ROW_3_Out_Bus,
+	CC_FILTER_ROW_4_Out_Bus,
+	CC_FILTER_ROW_5_Out_Bus,
+	CC_FILTER_ROW_6_Out_Bus,
+	CC_FILTER_ROW_7_Out_Bus,
+	
+//////////// INPUTS //////////
+	CC_FILTER_ALBERT_FROG_ROW_0_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_1_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_2_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_3_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_4_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_5_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_6_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_7_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_8_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_9_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_10_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_11_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_12_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_13_In_Bus,
+	CC_FILTER_ALBERT_FROG_ROW_14_In_Bus,
+	
+	CC_FILTER_BACKGROUND_ROW_0_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_1_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_2_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_3_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_4_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_5_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_6_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_7_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_8_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_9_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_10_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_11_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_12_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_13_IN_BUS,
+	CC_FILTER_BACKGROUND_ROW_14_IN_BUS,
+	
+	CC_FILTER_SELECTION_INLOW,
+	CC_FILTER_IMAGE_INBUS
+);
+//=======================================================
+//  PARAMETER declarations
+//=======================================================
+parameter DATAWIDTH_BUS = 8;
+//=======================================================
+//  PORT declarations
+//=======================================================
+output	reg [DATAWIDTH_BUS-1:0] CC_FILTER_ROW_0_Out_Bus;
+output	reg [DATAWIDTH_BUS-1:0] CC_FILTER_ROW_1_Out_Bus;
+output	reg [DATAWIDTH_BUS-1:0] CC_FILTER_ROW_2_Out_Bus;
+output	reg [DATAWIDTH_BUS-1:0] CC_FILTER_ROW_3_Out_Bus;
+output	reg [DATAWIDTH_BUS-1:0] CC_FILTER_ROW_4_Out_Bus;
+output	reg [DATAWIDTH_BUS-1:0] CC_FILTER_ROW_5_Out_Bus;
+output	reg [DATAWIDTH_BUS-1:0] CC_FILTER_ROW_6_Out_Bus;
+output	reg [DATAWIDTH_BUS-1:0] CC_FILTER_ROW_7_Out_Bus;
+input    CC_FILTER_SELECTION_INLOW;
+input		[1:0] CC_FILTER_IMAGE_INBUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_0_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_1_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_2_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_3_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_4_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_5_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_6_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_7_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_8_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_9_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_10_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_11_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_12_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_13_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_ALBERT_FROG_ROW_14_In_Bus;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_0_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_1_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_2_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_3_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_4_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_5_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_6_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_7_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_8_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_9_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_10_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_11_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_12_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_13_IN_BUS;
+input 	[DATAWIDTH_BUS-1:0] CC_FILTER_BACKGROUND_ROW_14_IN_BUS;
+
+
+//=======================================================
+//  REG/WIRE declarations
+//=======================================================
+//=======================================================
+//  Structural coding
+//=======================================================
+always @(*)
+begin
+	if (CC_FILTER_IMAGE_INBUS == 2'b10) begin
+		CC_FILTER_ROW_0_Out_Bus = CC_FILTER_ALBERT_FROG_ROW_0_In_Bus;
+		CC_FILTER_ROW_1_Out_Bus = CC_FILTER_ALBERT_FROG_ROW_1_In_Bus;
+		CC_FILTER_ROW_2_Out_Bus = CC_FILTER_ALBERT_FROG_ROW_2_In_Bus;
+		CC_FILTER_ROW_3_Out_Bus = CC_FILTER_ALBERT_FROG_ROW_3_In_Bus;
+		CC_FILTER_ROW_4_Out_Bus = CC_FILTER_ALBERT_FROG_ROW_4_In_Bus;
+		CC_FILTER_ROW_5_Out_Bus = CC_FILTER_ALBERT_FROG_ROW_5_In_Bus;
+		CC_FILTER_ROW_6_Out_Bus = CC_FILTER_ALBERT_FROG_ROW_6_In_Bus;
+		CC_FILTER_ROW_7_Out_Bus = CC_FILTER_ALBERT_FROG_ROW_7_In_Bus;
+		end
+
+	else if (CC_FILTER_SELECTION_INLOW == 0) begin
+		CC_FILTER_ROW_0_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_0_In_Bus | CC_FILTER_BACKGROUND_ROW_0_IN_BUS);
+		CC_FILTER_ROW_1_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_1_In_Bus | CC_FILTER_BACKGROUND_ROW_1_IN_BUS);
+		CC_FILTER_ROW_2_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_2_In_Bus | CC_FILTER_BACKGROUND_ROW_2_IN_BUS);
+		CC_FILTER_ROW_3_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_3_In_Bus | CC_FILTER_BACKGROUND_ROW_3_IN_BUS);
+		CC_FILTER_ROW_4_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_4_In_Bus | CC_FILTER_BACKGROUND_ROW_4_IN_BUS);
+		CC_FILTER_ROW_5_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_5_In_Bus | CC_FILTER_BACKGROUND_ROW_5_IN_BUS);
+		CC_FILTER_ROW_6_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_6_In_Bus | CC_FILTER_BACKGROUND_ROW_6_IN_BUS);
+		CC_FILTER_ROW_7_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_7_In_Bus | CC_FILTER_BACKGROUND_ROW_7_IN_BUS);
+		end
+		
+		
+	else begin
+		CC_FILTER_ROW_0_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_7_In_Bus | CC_FILTER_BACKGROUND_ROW_7_IN_BUS);
+		CC_FILTER_ROW_1_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_8_In_Bus | CC_FILTER_BACKGROUND_ROW_8_IN_BUS);
+		CC_FILTER_ROW_2_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_9_In_Bus | CC_FILTER_BACKGROUND_ROW_9_IN_BUS);
+		CC_FILTER_ROW_3_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_10_In_Bus | CC_FILTER_BACKGROUND_ROW_10_IN_BUS);
+		CC_FILTER_ROW_4_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_11_In_Bus | CC_FILTER_BACKGROUND_ROW_11_IN_BUS);
+		CC_FILTER_ROW_5_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_12_In_Bus | CC_FILTER_BACKGROUND_ROW_12_IN_BUS);
+		CC_FILTER_ROW_6_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_13_In_Bus | CC_FILTER_BACKGROUND_ROW_13_IN_BUS);
+		CC_FILTER_ROW_7_Out_Bus = (CC_FILTER_ALBERT_FROG_ROW_14_In_Bus | CC_FILTER_BACKGROUND_ROW_14_IN_BUS);
+		end
+
+end
+
+endmodule
